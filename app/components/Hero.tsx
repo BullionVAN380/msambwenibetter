@@ -9,11 +9,31 @@ const Hero = () => {
       alt: 'Empowering our community through health initiatives and medical camps' 
     },
     { 
-      src: '/images/slide2.jpg', 
+      src: '/images/slide2.jpeg', 
       alt: 'Providing quality education and learning opportunities for local students' 
     },
     { 
       src: '/images/slide3.jpeg', 
+      alt: 'Working together to protect and preserve our environment' 
+    },
+    { 
+      src: '/images/slide4.jpeg', 
+      alt: 'Working together to protect and preserve our environment' 
+    },
+    { 
+      src: '/images/slide5.jpeg', 
+      alt: 'Working together to protect and preserve our environment' 
+    },
+    { 
+      src: '/images/slide6.jpeg', 
+      alt: 'Working together to protect and preserve our environment' 
+    },
+    { 
+      src: '/images/slide7.jpeg', 
+      alt: 'Working together to protect and preserve our environment' 
+    },
+    { 
+      src: '/images/slide8.jpeg', 
       alt: 'Working together to protect and preserve our environment' 
     },
   ];
