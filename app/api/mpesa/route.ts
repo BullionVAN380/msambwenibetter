@@ -1,5 +1,10 @@
 import { NextResponse } from 'next/server';
 
+// Define types
+interface DebugData {
+  [key: string]: unknown;
+}
+
 const CONSUMER_KEY = process.env.MPESA_CONSUMER_KEY;
 const CONSUMER_SECRET = process.env.MPESA_CONSUMER_SECRET;
 const BUSINESS_SHORT_CODE = process.env.MPESA_SHORTCODE;
@@ -12,7 +17,7 @@ const BASE_URL = IS_PRODUCTION
   : 'https://sandbox.safaricom.co.ke';
 
 // Debug function to safely log sensitive data
-function debugLog(title: string, data: any) {
+function debugLog(title: string, data: DebugData) {
   // Only log in development
   if (!IS_PRODUCTION) {
     console.log(`=== ${title} ===`);
