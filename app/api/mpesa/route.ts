@@ -11,21 +11,64 @@ const BASE_URL = IS_PRODUCTION
   ? 'https://api.safaricom.co.ke' 
   : 'https://sandbox.safaricom.co.ke';
 
+// Debug function to safely log sensitive data
+function debugLog(title: string, data: any) {
+  // Only log in development
+  if (!IS_PRODUCTION) {
+    console.log(`=== ${title} ===`);
+    console.log(JSON.stringify(data, null, 2));
+  }
+}
+
 async function getAccessToken() {
-  const auth = Buffer.from(`${CONSUMER_KEY}:${CONSUMER_SECRET}`).toString('base64');
-  const response = await fetch(`${BASE_URL}/oauth/v1/generate?grant_type=client_credentials`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Basic ${auth}`,
-    },
-  });
-  const data = await response.json();
-  return data.access_token;
+  try {
+    const auth = Buffer.from(`${CONSUMER_KEY}:${CONSUMER_SECRET}`).toString('base64');
+    
+    debugLog('Auth String', { auth });
+    
+    const response = await fetch(`${BASE_URL}/oauth/v1/generate?grant_type=client_credentials`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Basic ${auth}`,
+      },
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('Access Token Error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorData
+      });
+      throw new Error(`Failed to get access token: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    debugLog('Access Token Response', data);
+    return data.access_token;
+  } catch (error) {
+    console.error('Access Token Error:', error);
+    throw error;
+  }
 }
 
 export async function POST(req: Request) {
   try {
+    // Validate environment variables
+    if (!CONSUMER_KEY || !CONSUMER_SECRET || !BUSINESS_SHORT_CODE || !PASSKEY || !CALLBACK_URL) {
+      console.error('Missing environment variables:', {
+        hasConsumerKey: !!CONSUMER_KEY,
+        hasConsumerSecret: !!CONSUMER_SECRET,
+        hasShortCode: !!BUSINESS_SHORT_CODE,
+        hasPasskey: !!PASSKEY,
+        hasCallbackUrl: !!CALLBACK_URL
+      });
+      throw new Error('Missing required environment variables');
+    }
+
     const { phoneNumber, amount } = await req.json();
+    
+    debugLog('Request Data', { phoneNumber, amount });
     
     // Get access token
     const accessToken = await getAccessToken();
@@ -36,6 +79,22 @@ export async function POST(req: Request) {
     // Generate password
     const password = Buffer.from(`${BUSINESS_SHORT_CODE}${PASSKEY}${timestamp}`).toString('base64');
     
+    const requestBody = {
+      BusinessShortCode: BUSINESS_SHORT_CODE,
+      Password: password,
+      Timestamp: timestamp,
+      TransactionType: IS_PRODUCTION ? 'CustomerPayBillOnline' : 'CustomerPayBillOnline',
+      Amount: amount,
+      PartyA: phoneNumber,
+      PartyB: BUSINESS_SHORT_CODE,
+      PhoneNumber: phoneNumber,
+      CallBackURL: CALLBACK_URL,
+      AccountReference: 'Msambweni Better Donation',
+      TransactionDesc: 'Donation to Msambweni Better',
+    };
+
+    debugLog('STK Push Request', requestBody);
+    
     // Prepare STK push request
     const response = await fetch(`${BASE_URL}/mpesa/stkpush/v1/processrequest`, {
       method: 'POST',
@@ -43,34 +102,31 @@ export async function POST(req: Request) {
         'Authorization': `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        BusinessShortCode: BUSINESS_SHORT_CODE,
-        Password: password,
-        Timestamp: timestamp,
-        TransactionType: IS_PRODUCTION ? 'CustomerPayBillOnline' : 'CustomerPayBillOnline',
-        Amount: amount,
-        PartyA: phoneNumber,
-        PartyB: BUSINESS_SHORT_CODE,
-        PhoneNumber: phoneNumber,
-        CallBackURL: CALLBACK_URL,
-        AccountReference: 'Msambweni Better Donation',
-        TransactionDesc: 'Donation to Msambweni Better',
-      }),
+      body: JSON.stringify(requestBody),
     });
 
-    const data = await response.json();
-    
     if (!response.ok) {
-      console.error('M-PESA API Error:', data);
-      throw new Error(data.errorMessage || 'Failed to process M-PESA payment');
+      const errorData = await response.text();
+      console.error('STK Push Error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorData
+      });
+      throw new Error(`STK push failed: ${response.status} ${response.statusText}`);
     }
+
+    const data = await response.json();
+    debugLog('STK Push Response', data);
     
     return NextResponse.json(data);
     
   } catch (error) {
     console.error('M-PESA API Error:', error);
     return NextResponse.json(
-      { error: 'Failed to process M-PESA payment' },
+      { 
+        error: error instanceof Error ? error.message : 'Failed to process M-PESA payment',
+        details: error instanceof Error ? error.stack : undefined
+      },
       { status: 500 }
     );
   }
