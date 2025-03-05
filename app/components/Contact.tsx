@@ -5,6 +5,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaFacebook, FaTwitter, FaInstagram, FaHandsHelping, FaDonate, FaHandshake } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
+import DonateForm from './DonateForm';
 
 // Initialize EmailJS with type check
 const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
@@ -95,90 +96,83 @@ const Contact = () => {
   ];
 
   return (
-    <>
-      <section id="contact" className="relative py-24 bg-gray-50">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxIDAgNiAyLjY5IDYgNnMtMi42OSA2LTYgNi02LTIuNjktNi02IDIuNjktNiA2LTZ6TTI0IDQ4YzMuMzEgMCA2IDIuNjkgNiA2cy0yLjY5IDYtNiA2LTYtMi42OS02LTYgMi42OS02IDYtNnptMC0xMmMzLjMxIDAgNiAyLjY5IDYgNnMtMi42OSA2LTYgNi02LTIuNjktNi02IDIuNjktNiA2LTZ6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMiIvPjwvZz48L3N2Zz4=')] bg-repeat"></div>
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Get <span className="text-green-700">Involved</span>
-            </h2>
-            <div className="w-24 h-1 bg-green-700 mx-auto mb-8"></div>
+    <section id="contact" className="py-16 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-center mb-8 text-green-800">Contact Us</h2>
+        
+        {/* Contact Information */}
+        <div className="max-w-4xl mx-auto mb-12 grid md:grid-cols-3 gap-8">
+          <div className="bg-white p-6 rounded-xl shadow-lg text-center">
+            <div className="bg-green-100 p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <FaPhone className="w-6 h-6 text-green-700" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Phone</h3>
+            <p className="text-gray-600">+254 700 000000</p>
+            <p className="text-gray-600">+254 733 000000</p>
           </div>
           
-          <div className="grid lg:grid-cols-2 gap-16">
-            <div>
-              <div className="grid md:grid-cols-1 gap-8">
-                {involvementOptions.map((option, index) => (
-                  <button
-                    key={index}
-                    onClick={option.action}
-                    className="group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 text-left w-full"
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div className="bg-green-100 p-3 rounded-lg text-green-700 group-hover:bg-green-700 group-hover:text-white transition-colors duration-300">
-                        {option.icon}
-                      </div>
-                      <div>
-                        <h4 className="text-xl font-semibold mb-2">{option.title}</h4>
-                        <p className="text-gray-600">{option.description}</p>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
+          <div className="bg-white p-6 rounded-xl shadow-lg text-center">
+            <div className="bg-green-100 p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <FaEnvelope className="w-6 h-6 text-green-700" />
             </div>
-
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h3 className="text-2xl font-semibold mb-8 text-center">Contact Information</h3>
-              
-              <div className="space-y-6">
-                <div className="flex items-center space-x-4 group">
-                  <div className="bg-green-100 p-3 rounded-lg text-green-700 group-hover:bg-green-700 group-hover:text-white transition-colors duration-300">
-                    <FaMapMarkerAlt className="w-6 h-6" />
-                  </div>
-                  <span className="text-gray-600">Msambweni Town, Kwale County, Kenya</span>
-                </div>
-                
-                <div className="flex items-center space-x-4 group">
-                  <div className="bg-green-100 p-3 rounded-lg text-green-700 group-hover:bg-green-700 group-hover:text-white transition-colors duration-300">
-                    <FaEnvelope className="w-6 h-6" />
-                  </div>
-                  <a href="mailto:msambwenibetterheedu@gmail.com" className="text-gray-600 hover:text-green-700 transition-colors">
-                    msambwenibetterheedu@gmail.com
-                  </a>
-                </div>
-                
-                <div className="flex items-center space-x-4 group">
-                  <div className="bg-green-100 p-3 rounded-lg text-green-700 group-hover:bg-green-700 group-hover:text-white transition-colors duration-300">
-                    <FaPhone className="w-6 h-6" />
-                  </div>
-                  <span className="text-gray-600">0707584412</span>
-                </div>
-              </div>
-
-              <div className="mt-12">
-                <h4 className="text-xl font-semibold mb-6 text-center">Follow Us</h4>
-                <div className="flex justify-center space-x-6">
-                  <a href="#" className="bg-green-100 p-3 rounded-lg text-green-700 hover:bg-green-700 hover:text-white transition-colors duration-300">
-                    <FaFacebook className="w-6 h-6" />
-                  </a>
-                  <a href="#" className="bg-green-100 p-3 rounded-lg text-green-700 hover:bg-green-700 hover:text-white transition-colors duration-300">
-                    <FaTwitter className="w-6 h-6" />
-                  </a>
-                  <a href="#" className="bg-green-100 p-3 rounded-lg text-green-700 hover:bg-green-700 hover:text-white transition-colors duration-300">
-                    <FaInstagram className="w-6 h-6" />
-                  </a>
-                </div>
-              </div>
+            <h3 className="text-xl font-semibold mb-2">Email</h3>
+            <p className="text-gray-600">info@msambwenibetter.org</p>
+            <p className="text-gray-600">support@msambwenibetter.org</p>
+          </div>
+          
+          <div className="bg-white p-6 rounded-xl shadow-lg text-center">
+            <div className="bg-green-100 p-3 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <FaMapMarkerAlt className="w-6 h-6 text-green-700" />
             </div>
+            <h3 className="text-xl font-semibold mb-2">Location</h3>
+            <p className="text-gray-600">Msambweni, Kwale County</p>
+            <p className="text-gray-600">Kenya</p>
           </div>
         </div>
-      </section>
+
+        {/* Social Media Links */}
+        <div className="flex justify-center space-x-6 mb-12">
+          <a href="https://facebook.com/msambwenibetter" target="_blank" rel="noopener noreferrer" 
+             className="text-green-700 hover:text-green-800 transition-colors">
+            <FaFacebook className="w-8 h-8" />
+          </a>
+          <a href="https://twitter.com/msambwenibetter" target="_blank" rel="noopener noreferrer"
+             className="text-green-700 hover:text-green-800 transition-colors">
+            <FaTwitter className="w-8 h-8" />
+          </a>
+          <a href="https://instagram.com/msambwenibetter" target="_blank" rel="noopener noreferrer"
+             className="text-green-700 hover:text-green-800 transition-colors">
+            <FaInstagram className="w-8 h-8" />
+          </a>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <div className="grid md:grid-cols-1 gap-8">
+              {involvementOptions.map((option, index) => (
+                <button
+                  key={index}
+                  onClick={option.action}
+                  className="group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 text-left w-full"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="bg-green-100 p-3 rounded-lg text-green-700 group-hover:bg-green-700 group-hover:text-white transition-colors duration-300">
+                      {option.icon}
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-semibold mb-2">{option.title}</h4>
+                      <p className="text-gray-600">{option.description}</p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <DonateForm />
+          </div>
+        </div>
+      </div>
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={() => setIsOpen(false)}>
@@ -299,7 +293,7 @@ const Contact = () => {
           </div>
         </Dialog>
       </Transition>
-    </>
+    </section>
   );
 };
 
