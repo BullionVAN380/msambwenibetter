@@ -10,7 +10,7 @@ const About = () => {
           </h2>
           <div className="w-24 h-1 bg-green-700 mx-auto mb-8"></div>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Msambweni Better Heedu C.B.O is a community-based organization located in Vingujini, Msambweni Sub-county. Established in 2021 and officially registered in May 2024, we focus on sustainable development and community empowerment.
+            Msambweni Better Msambweni Better Health, Environment and Education  <span className="text-green-700">Heedu</span> is a community-based organization located in Vingujini, Msambweni Sub-county. Established in 2021 and officially registered in May 2024, we focus on sustainable development and community empowerment.
           </p>
         </div>
         
