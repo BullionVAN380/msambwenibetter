@@ -107,8 +107,7 @@ const Contact = () => {
               <FaPhone className="w-6 h-6 text-green-700" />
             </div>
             <h3 className="text-xl font-semibold mb-2">Phone</h3>
-            <p className="text-gray-600">+254 700 000000</p>
-            <p className="text-gray-600">+254 733 000000</p>
+            <p className="text-gray-600">+254 707584412</p>
           </div>
           
           <div className="bg-white p-6 rounded-xl shadow-lg text-center">
@@ -117,7 +116,7 @@ const Contact = () => {
             </div>
             <h3 className="text-xl font-semibold mb-2">Email</h3>
             <p className="text-gray-600">info@msambwenibetter.org</p>
-            <p className="text-gray-600">support@msambwenibetter.org</p>
+            <p className="text-gray-600">Support: jtenguri@gmail.com</p>
           </div>
           
           <div className="bg-white p-6 rounded-xl shadow-lg text-center">
